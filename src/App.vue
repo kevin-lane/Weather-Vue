@@ -29,7 +29,7 @@ const highestTemp = ref(0);
 const temperaturesArr = ref<any>([]);
 
 
-const apiKey = "7657809fc7768790d5958c7246619b6a";
+const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=metric`;
 const apiForecast = `https://api.openweathermap.org/data/2.5/forecast?units=metric`;
 const timeAPI = `https://timeapi.io/api/time/current/zone?`;
