@@ -76,15 +76,14 @@
         var data = await response.json();
         city = data.name;
         this.country = data.sys.country;
-        this.temperature = data.main.temp;
-        this.lowestTemp = data.main.temp_min;
-        this.highestTemp = data.main.temp_max;
+        this.temperature = Math.round(data.main.temp);
+        this.lowestTemp = Math.round(data.main.temp_min);
+        this.highestTemp = Math.round(data.main.temp_max);
         this.weatherCondition = data.weather[0].description;
       },
       async getForecast(city:string) {
         const response = await fetch(this.apiForecast + `&q=${city}&appid=${this.apiKey}`);
         var data = await response.json();
-        console.log(data.list);
         this.day = this.date.getDate();
         this.month = this.date.getMonth() + 1;
         this.year = this.date.getFullYear();
@@ -107,8 +106,8 @@
 
           this.temperaturesArr.push({
             date: date,
-            lowestTemperature: lowestTemp.main.temp,
-            highestTemperature: highestTemp.main.temp
+            lowestTemperature: Math.round(lowestTemp.main.temp),
+            highestTemperature: Math.round(highestTemp.main.temp)
           });
         }
       },

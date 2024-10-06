@@ -15,7 +15,3 @@
       time: string
     }>();
 </script>
-
-<style scoped>
-
-</style>
