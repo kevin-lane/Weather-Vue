@@ -29,14 +29,14 @@
         temperature: 0,
         lowestTemp: 0,
         highestTemp: 0,
-        temperaturesArr: [] as any
+        temperaturesArr: [] as any,
+        searched: false
       }
     },
     methods: {
       searchCity(query:string){
+        this.searched = true;
         this.city = query;
-        console.log(this.city);
-
         //If previous forecast in array, remove and replace with new citys forecast
         if (this.temperaturesArr.length > 0) {
           this.temperaturesArr.splice(-5);
@@ -96,13 +96,10 @@
 
         for (let i = 1; i < 6; i++) {
           const date = this.setDates(this.currentDate, i);
-          console.log(date);
-
           //Lowest temperature for the day
           const lowestTemp = nextFiveDaysForecast.filter((item:any) => item.dt_txt.startsWith(date)).reduce((minItem: any, currentItem:any) => {
             return currentItem.main.temp < minItem.main.temp ? currentItem : minItem;
           }, nextFiveDaysForecast[0]);
-
           //Highest temperature for the day
           const highestTemp = nextFiveDaysForecast.filter((item:any) => item.dt_txt.startsWith(date)).reduce((maxItem: any, currentItem:any) => {
             return currentItem.main.temp > maxItem.main.temp ? currentItem : maxItem;
@@ -114,14 +111,19 @@
             highestTemperature: highestTemp.main.temp
           });
         }
+      },
+      onInputChange(){
+        if(this.city !== ''){
+          this.searched = false;
+        }
       }
-    }
+    },
   }
 </script>
 
 <template>
-  <SearchBar v-model:searchQuery="city" @search-city="() => searchCity(city)"/>
-  <p class="text-center text-xl" v-if="city === ''">Please enter a city</p>
+  <SearchBar v-model:searchQuery="city" @search-city="() => searchCity(city)" @input-change="onInputChange"/>
+  <p class="text-center text-xl" v-if="searched === false">Please enter a city</p>
   <template v-else>
       <p class="text-center text-xl">The weather forecast in {{ city }}, {{ country }}</p>
       <div class="min-[1001px]:flex justify-evenly w-full mt-6  max-[1000px]:grid space-y-6 w-1/2 mb-4 place-content-center">
